@@ -115,7 +115,7 @@
             app:drawableLeftCompat="@drawable/ic_error_outline_24" />
 
         <Button
-            android:id="@+id/input_submit_btn"
+            android:id="@+id/input_save_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
