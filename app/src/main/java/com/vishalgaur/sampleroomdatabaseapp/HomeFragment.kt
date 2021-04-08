@@ -27,10 +27,19 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-		sharedViewModel.status.observe(viewLifecycleOwner, {status ->
-			when(status) {
+        sharedViewModel.status.observe(viewLifecycleOwner, { status ->
+			when (status) {
 				DataStatus.LOADED -> setHomeView()
 				else -> setHomeView(View.GONE, View.VISIBLE, false)
+			}
+		})
+
+        sharedViewModel.userData.observe(viewLifecycleOwner, { userData ->
+			if (userData != null) {
+				binding.detailName.text = userData.userName
+				binding.detailEmail.text = userData.userEmail
+				binding.detailMobile.text = userData.userMobile
+				binding.detailDob.text = userData.userDOB
 			}
 		})
         binding.fabAddEdit.setOnClickListener {
@@ -38,9 +47,13 @@ class HomeFragment : Fragment() {
         }
     }
 
-	private fun setHomeView(homeVisibility: Int = View.VISIBLE, emptyTextVisibility: Int = View.GONE, fabIcon: Boolean = true) {
-		binding.homeConstraintLayout.visibility = homeVisibility
-		binding.homeEmptyTextView.visibility = emptyTextVisibility
-		binding.fabAddEdit.setImageResource(if(fabIcon) R.drawable.ic_edit_48 else R.drawable.ic_add_48)
-	}
+    private fun setHomeView(
+		homeVisibility: Int = View.VISIBLE,
+		emptyTextVisibility: Int = View.GONE,
+		fabIcon: Boolean = true
+	) {
+        binding.homeConstraintLayout.visibility = homeVisibility
+        binding.homeEmptyTextView.visibility = emptyTextVisibility
+        binding.fabAddEdit.setImageResource(if (fabIcon) R.drawable.ic_edit_48 else R.drawable.ic_add_48)
+    }
 }
