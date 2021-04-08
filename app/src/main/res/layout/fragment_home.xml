@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/homeConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".HomeFragment">
@@ -91,28 +92,24 @@
             app:layout_constraintTop_toBottomOf="@+id/detail_mobile"
             tools:text="Jan 01, 1999" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="32dp"
-            android:drawablePadding="16dp"
-            android:fontFamily="serif"
-            android:padding="4dp"
-            android:text="@string/detail_empty_text"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:textColor="@color/purple_500"
-            android:textStyle="bold"
-            app:drawableTint="@color/design_default_color_primary"
-            app:drawableTopCompat="@drawable/ic_error_outline_64"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/homeEmptyTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="32dp"
+        android:drawablePadding="16dp"
+        android:fontFamily="serif"
+        android:padding="4dp"
+        android:text="@string/detail_empty_text"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/purple_500"
+        android:textStyle="bold"
+        app:drawableTint="@color/design_default_color_primary"
+        app:drawableTopCompat="@drawable/ic_error_outline_64" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddEdit"
