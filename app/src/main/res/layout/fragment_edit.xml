@@ -27,6 +27,7 @@
             android:id="@+id/input_name_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autofillHints=""
             android:hint="@string/hint_name"
             android:inputType="textPersonName"
             android:maxLines="1"
@@ -48,6 +49,7 @@
             android:id="@+id/input_email_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autofillHints=""
             android:hint="@string/hint_email"
             android:inputType="textWebEmailAddress"
             android:maxLines="1"
@@ -69,6 +71,7 @@
             android:id="@+id/input_mobile_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autofillHints=""
             android:hint="@string/hint_mobile"
             android:inputType="phone"
             android:maxLines="1"
@@ -76,27 +79,37 @@
             app:layout_constraintTop_toBottomOf="@id/input_mobile_label" />
 
         <TextView
-            android:id="@+id/input_bio_label"
+            android:id="@+id/input_dob_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="@string/input_bio_label_text"
+            android:text="@string/input_dob_label_text"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/input_mobile_edit_text" />
 
         <EditText
-            android:id="@+id/input_bio_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:id="@+id/input_dob_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
             android:ems="10"
-            android:gravity="start|top"
-            android:hint="@string/hint_bio"
-            android:inputType="textMultiLine"
-            android:maxLines="4"
+            android:hint="@string/hint_dob"
+            android:inputType="date"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/input_bio_label" />
+            app:layout_constraintTop_toBottomOf="@id/input_dob_label" />
+
+        <ImageButton
+            android:id="@+id/input_select_date_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:contentDescription="@string/input_date_pick_btn_desc"
+            android:src="@drawable/ic_calender_24"
+            app:layout_constraintBottom_toBottomOf="@+id/input_dob_edit_text"
+            app:layout_constraintStart_toEndOf="@+id/input_dob_edit_text"
+            app:layout_constraintTop_toTopOf="@+id/input_dob_edit_text" />
 
         <TextView
             android:id="@+id/input_error_text_view"
@@ -109,18 +122,33 @@
             android:text="@string/input_error_text"
             android:textAlignment="textStart"
             android:textColor="#FF0000"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/input_bio_edit_text"
+            app:drawableLeftCompat="@drawable/ic_error_outline_24"
             app:drawableTint="#FF0000"
-            app:drawableLeftCompat="@drawable/ic_error_outline_24" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/input_dob_edit_text" />
 
         <Button
             android:id="@+id/input_save_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@android:color/holo_green_dark"
             android:text="@string/input_save_btn_text"
+            app:icon="@drawable/ic_save_24"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/input_error_text_view" />
+
+        <Button
+            android:id="@+id/input_cancel_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:backgroundTint="@android:color/darker_gray"
+            android:text="@string/input_cancel_btn_text"
+            android:textColor="@color/black"
+            app:icon="@drawable/ic_clear_24"
+            app:iconTint="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/input_error_text_view" />
 

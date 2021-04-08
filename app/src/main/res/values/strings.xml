@@ -10,19 +10,21 @@
     <string name="input_name_label_text">Name</string>
     <string name="input_email_label_text">Email Address</string>
     <string name="input_mobile_label_text">Mobile Number</string>
-    <string name="input_bio_label_text">Something about yourself:</string>
     <string name="input_save_btn_text">Save</string>
     <string name="hint_name">Your Name</string>
     <string name="hint_email">someone@example.com</string>
     <string name="hint_mobile">1234567890</string>
-    <string name="hint_bio">Human</string>
+    <string name="hint_dob">DD/MM/YYYY</string>
     <string name="input_title_text">Enter Your Details</string>
     <string name="detail_name_label_text">Name: </string>
     <string name="detail_email_label_text">Email:</string>
     <string name="detail_mobile_label_text">Mobile:</string>
-    <string name="detail_bio_label_text">About:</string>
     <string name="detail_title_text">Your Info</string>
     <string name="detail_go_back_btn_text">Back</string>
     <string name="input_error_text">Fill all the details</string>
     <string name="detail_empty_text">Nothing to show!</string>
+    <string name="input_dob_label_text">Date of Birth</string>
+    <string name="input_date_text" ><u>%s</u></string>
+    <string name="input_date_pick_btn_desc">Button to select date</string>
+    <string name="input_cancel_btn_text">Cancel</string>
 </resources>
