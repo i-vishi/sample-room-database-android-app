@@ -8,6 +8,8 @@ import androidx.navigation.testing.TestNavHostController
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -66,5 +68,16 @@ class HomeFragmentTest {
         onView(withId(R.id.homeEmptyTextView))
             .check(matches(withEffectiveVisibility(Visibility.GONE)))
         onView(withId(R.id.homeConstraintLayout)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun onFabClick_navigateToEditFragment() {
+        homeScenario.onFragment {
+            it.sharedViewModel.clearData()
+        }
+
+        onView(withId(R.id.fabAddEdit)).perform(click())
+
+        assertEquals(R.id.EditFragment, navController.currentDestination?.id)
     }
 }
