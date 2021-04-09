@@ -35,7 +35,7 @@ class SharedViewModel : ViewModel() {
     fun submitData(name: String, email: String, mobile: String, dob: String) {
         if (name.isEmpty() || email.isEmpty() || mobile.isEmpty() || dob.isEmpty()) {
             _status.value = DataStatus.EMPTY
-        	_errorStatus.value = ViewErrors.ERR_EMPTY
+            _errorStatus.value = ViewErrors.ERR_EMPTY
         } else {
             var err = "ERROR"
             if (!isEmailValid(email)) {
@@ -45,14 +45,19 @@ class SharedViewModel : ViewModel() {
                 err += "_MOBILE"
             }
             when (err) {
-				"ERROR" -> {
-					_userData.value = UserData(name.trim(), email.trim(), mobile.trim(), dob)
-					_errorStatus.value = ViewErrors.NONE
-					_status.value = DataStatus.LOADED
-				}
-				"ERROR_EMAIL" -> _errorStatus.value = ViewErrors.ERR_EMAIL
-				"ERROR_MOBILE" -> _errorStatus.value = ViewErrors.ERR_MOBILE
-				"ERROR_EMAIL_MOBILE" -> _errorStatus.value = ViewErrors.ERR_EMAIL_MOBILE
+                "ERROR" -> {
+                    _userData.value = UserData(
+                        userName = name.trim(),
+                        userEmail = email.trim(),
+                        userMobile = mobile.trim(),
+                        userDOB = dob
+                    )
+                    _errorStatus.value = ViewErrors.NONE
+                    _status.value = DataStatus.LOADED
+                }
+                "ERROR_EMAIL" -> _errorStatus.value = ViewErrors.ERR_EMAIL
+                "ERROR_MOBILE" -> _errorStatus.value = ViewErrors.ERR_MOBILE
+                "ERROR_EMAIL_MOBILE" -> _errorStatus.value = ViewErrors.ERR_EMAIL_MOBILE
             }
         }
     }
