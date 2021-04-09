@@ -5,9 +5,12 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.vishalgaur.sampleroomdatabaseapp.database.UserDao
 import com.vishalgaur.sampleroomdatabaseapp.database.UserData
+import com.vishalgaur.sampleroomdatabaseapp.database.UserDatabase
 import com.vishalgaur.sampleroomdatabaseapp.isEmailValid
 import com.vishalgaur.sampleroomdatabaseapp.isPhoneValid
+import com.vishalgaur.sampleroomdatabaseapp.repository.UsersRepository
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 private const val TAG = "SharedViewModel"
 
@@ -17,6 +20,8 @@ enum class ViewErrors { NONE, ERR_EMAIL, ERR_MOBILE, ERR_EMAIL_MOBILE, ERR_EMPTY
 
 class SharedViewModel(private val db: UserDao, application: Application) :
     AndroidViewModel(application) {
+
+    private val usersRepository = UsersRepository(UserDatabase.getInstance(application))
 
     private val _userData = MutableLiveData<UserData?>()
     val userData: LiveData<UserData?> get() = _userData
@@ -28,11 +33,23 @@ class SharedViewModel(private val db: UserDao, application: Application) :
     val errorStatus: LiveData<ViewErrors> get() = _errorStatus
 
     init {
+        refreshDataFromRepository()
+    }
+
+    private fun refreshDataFromRepository() {
         viewModelScope.launch {
-            Log.d(TAG, "getting data...")
             _status.value = DataStatus.LOADING
             _errorStatus.value = ViewErrors.NONE
-            val uData = getUserFromDatabase()
+
+            try {
+                Log.d(TAG, "Getting data from network...")
+                usersRepository.refreshData()
+            } catch (networkError: IOException) {
+                Log.d(TAG, "Not able to get data from network!")
+            }
+
+            Log.d(TAG, "Getting data from Room...")
+            val uData = usersRepository.uData
             if (uData != null) {
                 Log.d(TAG, "Data found: ${uData.userName}")
                 _status.value = DataStatus.LOADED
@@ -45,15 +62,15 @@ class SharedViewModel(private val db: UserDao, application: Application) :
         }
     }
 
-    private fun getUserFromDatabase(): UserData? {
-        val uData = db.getNewData()
-        val tableSize = db.getUsersData().size
-        if (uData != null) {
-            Log.d(TAG, "size: $tableSize, data: $uData")
-            return uData
-        }
-        return null
-    }
+//    private fun getUserFromDatabase(): UserData? {
+//        val uData = db.getNewData()
+//        val tableSize = db.getUsersData().size
+//        if (uData != null) {
+//            Log.d(TAG, "size: $tableSize, data: $uData")
+//            return uData
+//        }
+//        return null
+//    }
 
     fun submitData(name: String, email: String, mobile: String, dob: String) {
         if (name.isEmpty() || email.isEmpty() || mobile.isEmpty() || dob.isEmpty()) {
@@ -91,9 +108,9 @@ class SharedViewModel(private val db: UserDao, application: Application) :
 
     private fun insertData() {
         viewModelScope.launch {
-            db.clear()
             _status.value = DataStatus.EMPTY
-            _userData.value?.let { db.insert(it) }
+
+            _userData.value?.let { usersRepository.updateData(it) }
         }
     }
 }
