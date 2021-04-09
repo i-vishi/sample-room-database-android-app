@@ -26,5 +26,13 @@ class UsersRepository(private val database: UserDatabase) {
         }
     }
 
+    suspend fun clearData() {
+        withContext(Dispatchers.IO) {
+            Log.d(TAG, "removing from Room")
+            database.userDao.clear()
+            Log.d(TAG, "removing from Network")
+        }
+    }
+
     val uData: LiveData<UserData?> = database.userDao.getNewData()
 }

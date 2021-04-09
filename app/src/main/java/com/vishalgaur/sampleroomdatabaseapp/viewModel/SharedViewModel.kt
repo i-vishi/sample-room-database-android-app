@@ -113,11 +113,17 @@ class SharedViewModel(application: Application) :
         }
     }
 
+    fun clearData() {
+        viewModelScope.launch {
+            _status.value = DataStatus.EMPTY
+            usersRepository.clearData()
+        }
+    }
+
     private fun insertData(newData: UserData) {
         viewModelScope.launch {
             _status.value = DataStatus.EMPTY
             usersRepository.updateData(newData)
-//            _userData.value?.let { usersRepository.updateData(it) }
         }
     }
 }

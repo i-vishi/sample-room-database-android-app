@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.vishalgaur.sampleroomdatabaseapp.database.UserData
@@ -19,7 +20,9 @@ import java.util.*
 class EditFragment : Fragment() {
 
     private lateinit var binding: FragmentEditBinding
-    private lateinit var sharedViewModel: SharedViewModel
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    lateinit var sharedViewModel: SharedViewModel
 
     private val calInstance: Calendar = Calendar.getInstance()
 

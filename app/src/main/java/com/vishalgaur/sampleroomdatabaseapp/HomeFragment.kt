@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.vishalgaur.sampleroomdatabaseapp.databinding.FragmentHomeBinding
@@ -15,7 +16,9 @@ import com.vishalgaur.sampleroomdatabaseapp.viewModel.SharedViewModelFactory
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var sharedViewModel: SharedViewModel
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    lateinit var sharedViewModel: SharedViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
