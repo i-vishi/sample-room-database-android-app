@@ -24,9 +24,9 @@ class UserDatabaseTest {
     fun createDb() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
 
-        db =
-            Room.inMemoryDatabaseBuilder(context, UserDatabase::class.java).allowMainThreadQueries()
-                .build()
+        db = Room.inMemoryDatabaseBuilder(context, UserDatabase::class.java)
+            .allowMainThreadQueries()
+            .build()
         userDao = db.userDao
     }
 
@@ -39,7 +39,13 @@ class UserDatabaseTest {
 
     @Test
     fun insertAndGetUser() {
-        val user = UserData(123, "Vishal Gaur", "vishal@email.com", "9879879879", "01/01/1999")
+        val user = UserData(
+            123,
+            "Vishal Gaur",
+            "vishal@email.com",
+            "9879879879",
+            "01/01/1999"
+        )
         userDao.insert(user)
         val getUser = userDao.get("9879879879")
         assertEquals(getUser, user)

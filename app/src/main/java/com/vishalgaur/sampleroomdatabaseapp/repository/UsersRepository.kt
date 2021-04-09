@@ -1,6 +1,7 @@
 package com.vishalgaur.sampleroomdatabaseapp.repository
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import com.vishalgaur.sampleroomdatabaseapp.database.UserData
 import com.vishalgaur.sampleroomdatabaseapp.database.UserDatabase
 import kotlinx.coroutines.Dispatchers
@@ -25,5 +26,5 @@ class UsersRepository(private val database: UserDatabase) {
         }
     }
 
-    val uData: UserData? = database.userDao.getNewData()
+    val uData: LiveData<UserData?> = database.userDao.getNewData()
 }

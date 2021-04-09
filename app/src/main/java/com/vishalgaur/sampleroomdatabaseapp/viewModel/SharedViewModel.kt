@@ -22,8 +22,10 @@ class SharedViewModel(application: Application) :
 
     private val usersRepository = UsersRepository(UserDatabase.getInstance(application))
 
-    private val _userData = MutableLiveData<UserData?>()
-    val userData: LiveData<UserData?> get() = _userData
+//    private val _userData = MutableLiveData<UserData?>()
+//    val userData: LiveData<UserData?> get() = _userData
+
+    val userData = usersRepository.uData
 
     private val _status = MutableLiveData<DataStatus>()
     val status: LiveData<DataStatus> get() = _status
@@ -47,16 +49,16 @@ class SharedViewModel(application: Application) :
                 Log.d(TAG, "Not able to get data from network!")
             }
 
-            Log.d(TAG, "Getting data from Room...")
-            val uData = usersRepository.uData
-            if (uData != null) {
-                Log.d(TAG, "Data found: ${uData.userName}")
-                _status.value = DataStatus.LOADED
-                _userData.value = uData
-            } else {
-                Log.d(TAG, "No Data Found!")
-                _status.value = DataStatus.EMPTY
-                _userData.value = null
+            userData.observeForever {
+                Log.d(TAG, "Getting data from Room...")
+
+                if (it != null) {
+                    Log.d(TAG, "Data found: ${userData.value!!.userName}")
+                    _status.value = DataStatus.LOADED
+                } else {
+                    Log.d(TAG, "No Data Found!")
+                    _status.value = DataStatus.EMPTY
+                }
             }
         }
     }
@@ -86,13 +88,19 @@ class SharedViewModel(application: Application) :
             when (err) {
                 "ERROR" -> {
                     viewModelScope.launch {
-                        _userData.value = UserData(
+//                        _userData.value = UserData(
+//                            userName = name.trim(),
+//                            userEmail = email.trim(),
+//                            userMobile = mobile.trim(),
+//                            userDOB = dob
+//                        )
+                        val newData = UserData(
                             userName = name.trim(),
                             userEmail = email.trim(),
                             userMobile = mobile.trim(),
                             userDOB = dob
                         )
-                        insertData()
+                        insertData(newData)
                         _errorStatus.value = ViewErrors.NONE
                         _status.value = DataStatus.LOADED
                     }
@@ -105,11 +113,11 @@ class SharedViewModel(application: Application) :
         }
     }
 
-    private fun insertData() {
+    private fun insertData(newData: UserData) {
         viewModelScope.launch {
             _status.value = DataStatus.EMPTY
-
-            _userData.value?.let { usersRepository.updateData(it) }
+            usersRepository.updateData(newData)
+//            _userData.value?.let { usersRepository.updateData(it) }
         }
     }
 }
