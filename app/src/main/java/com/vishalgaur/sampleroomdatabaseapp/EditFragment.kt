@@ -1,5 +1,6 @@
 package com.vishalgaur.sampleroomdatabaseapp
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,11 +12,15 @@ import com.vishalgaur.sampleroomdatabaseapp.database.UserData
 import com.vishalgaur.sampleroomdatabaseapp.databinding.FragmentEditBinding
 import com.vishalgaur.sampleroomdatabaseapp.viewModel.SharedViewModel
 import com.vishalgaur.sampleroomdatabaseapp.viewModel.ViewErrors
+import java.text.SimpleDateFormat
+import java.util.*
 
 class EditFragment : Fragment() {
 
     private lateinit var binding: FragmentEditBinding
-    val sharedViewModel: SharedViewModel by activityViewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
+
+    private val calInstance: Calendar = Calendar.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,7 +63,39 @@ class EditFragment : Fragment() {
             }
         }
 
+        binding.inputSelectDateBtn.setOnClickListener { showDatePicker() }
+
         binding.inputErrorTextView.visibility = View.GONE
+    }
+
+    private fun showDatePicker() {
+        val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+            calInstance.set(Calendar.YEAR, year)
+            calInstance.set(Calendar.MONTH, month)
+            calInstance.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            setDateInTextView()
+        }
+
+        context?.let {
+            DatePickerDialog(
+                it,
+                dateSetListener,
+                calInstance.get(Calendar.YEAR),
+                calInstance.get(Calendar.MONTH),
+                calInstance.get(Calendar.DAY_OF_MONTH)
+            ).show()
+        }
+
+    }
+
+    private fun setDateInTextView() {
+        val format = "dd/MM/yyyy"
+        binding.inputDobEditText.setText(
+            SimpleDateFormat(
+                format,
+                Locale.US
+            ).format(calInstance.time)
+        )
     }
 
     private fun onSubmit() {
