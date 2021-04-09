@@ -41,6 +41,7 @@ class HomeFragmentTest {
         runOnUiThread {
             navController.setGraph(R.navigation.nav_graph)
             homeScenario.onFragment {
+                it.sharedViewModel.clearData()
                 Navigation.setViewNavController(it.requireView(), navController)
             }
         }
@@ -48,9 +49,6 @@ class HomeFragmentTest {
 
     @Test
     fun noData_showNothing() {
-        homeScenario.onFragment {
-            it.sharedViewModel.clearData()
-        }
         onView(withId(R.id.homeConstraintLayout))
             .check(matches(withEffectiveVisibility(Visibility.GONE)))
         onView(withId(R.id.homeEmptyTextView)).check(matches(isDisplayed()))
@@ -72,9 +70,6 @@ class HomeFragmentTest {
 
     @Test
     fun onFabClick_navigateToEditFragment() {
-        homeScenario.onFragment {
-            it.sharedViewModel.clearData()
-        }
 
         onView(withId(R.id.fabAddEdit)).perform(click())
 

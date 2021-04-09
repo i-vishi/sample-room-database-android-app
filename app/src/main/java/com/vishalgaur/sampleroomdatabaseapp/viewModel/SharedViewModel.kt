@@ -53,7 +53,7 @@ class SharedViewModel(application: Application) :
                 Log.d(TAG, "Getting data from Room...")
 
                 if (it != null) {
-                    Log.d(TAG, "Data found: ${userData.value!!.userName}")
+                    Log.d(TAG, "Data found: ${userData.value?.userName}")
                     _status.value = DataStatus.LOADED
                 } else {
                     Log.d(TAG, "No Data Found!")
@@ -87,23 +87,15 @@ class SharedViewModel(application: Application) :
             }
             when (err) {
                 "ERROR" -> {
-                    viewModelScope.launch {
-//                        _userData.value = UserData(
-//                            userName = name.trim(),
-//                            userEmail = email.trim(),
-//                            userMobile = mobile.trim(),
-//                            userDOB = dob
-//                        )
-                        val newData = UserData(
-                            userName = name.trim(),
-                            userEmail = email.trim(),
-                            userMobile = mobile.trim(),
-                            userDOB = dob
-                        )
-                        insertData(newData)
-                        _errorStatus.value = ViewErrors.NONE
-                        _status.value = DataStatus.LOADED
-                    }
+                    val newData = UserData(
+                        userName = name.trim(),
+                        userEmail = email.trim(),
+                        userMobile = mobile.trim(),
+                        userDOB = dob
+                    )
+                    insertData(newData)
+                    _errorStatus.value = ViewErrors.NONE
+                    _status.value = DataStatus.LOADED
 
                 }
                 "ERROR_EMAIL" -> _errorStatus.value = ViewErrors.ERR_EMAIL

@@ -34,6 +34,7 @@ class EditFragmentTest {
         runOnUiThread {
             navController.setGraph(R.navigation.nav_graph)
             editScenario.onFragment {
+                it.sharedViewModel.clearData()
                 Navigation.setViewNavController(it.requireView(), navController)
             }
         }
