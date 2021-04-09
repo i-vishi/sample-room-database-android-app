@@ -6,11 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.vishalgaur.sampleroomdatabaseapp.database.UserData
+import com.vishalgaur.sampleroomdatabaseapp.database.UserDatabase
 import com.vishalgaur.sampleroomdatabaseapp.databinding.FragmentEditBinding
 import com.vishalgaur.sampleroomdatabaseapp.viewModel.SharedViewModel
+import com.vishalgaur.sampleroomdatabaseapp.viewModel.SharedViewModelFactory
 import com.vishalgaur.sampleroomdatabaseapp.viewModel.ViewErrors
 import java.text.SimpleDateFormat
 import java.util.*
@@ -18,7 +20,7 @@ import java.util.*
 class EditFragment : Fragment() {
 
     private lateinit var binding: FragmentEditBinding
-    private val sharedViewModel: SharedViewModel by activityViewModels()
+    private lateinit var sharedViewModel: SharedViewModel
 
     private val calInstance: Calendar = Calendar.getInstance()
 
@@ -28,6 +30,13 @@ class EditFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentEditBinding.inflate(inflater, container, false)
+
+        // initializing shared view model
+        val application = requireNotNull(this.activity).application
+        val dataSource = UserDatabase.getInstance(application).userDao
+        val viewModelFactory = SharedViewModelFactory(dataSource, application)
+        sharedViewModel = ViewModelProvider(this, viewModelFactory).get(SharedViewModel::class.java)
+
         return binding.root
     }
 

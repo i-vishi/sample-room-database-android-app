@@ -1,13 +1,12 @@
 package com.vishalgaur.sampleroomdatabaseapp.database
 
 import android.content.Context
-import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
 interface UserDao {
-    @Query("select * from userTable")
-    fun getUsersData(): LiveData<List<UserData>>
+    @Query("SELECT * FROM userTable ORDER BY userId DESC")
+    fun getUsersData(): List<UserData>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(usersData: List<UserData>)
@@ -19,7 +18,10 @@ interface UserDao {
     fun insert(uData: UserData)
 
     @Query("SELECT * FROM userTable WHERE userMobile = :uMobile")
-    fun get(uMobile: String): UserData
+    fun get(uMobile: String): UserData?
+
+    @Query("SELECT * FROM userTable ORDER BY userId DESC LIMIT 1")
+    fun getNewData(): UserData?
 }
 
 @Database(entities = [UserData::class], version = 1, exportSchema = false)
@@ -39,6 +41,7 @@ abstract class UserDatabase : RoomDatabase() {
                         UserDatabase::class.java,
                         "userInfo"
                     )
+                        .allowMainThreadQueries()
                         .fallbackToDestructiveMigration()
                         .build()
                     INSTANCE = instance
