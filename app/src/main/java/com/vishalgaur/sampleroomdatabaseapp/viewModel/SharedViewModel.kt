@@ -3,7 +3,6 @@ package com.vishalgaur.sampleroomdatabaseapp.viewModel
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
-import com.vishalgaur.sampleroomdatabaseapp.database.UserDao
 import com.vishalgaur.sampleroomdatabaseapp.database.UserData
 import com.vishalgaur.sampleroomdatabaseapp.database.UserDatabase
 import com.vishalgaur.sampleroomdatabaseapp.isEmailValid
@@ -18,7 +17,7 @@ enum class DataStatus { LOADING, LOADED, EMPTY }
 
 enum class ViewErrors { NONE, ERR_EMAIL, ERR_MOBILE, ERR_EMAIL_MOBILE, ERR_EMPTY }
 
-class SharedViewModel(private val db: UserDao, application: Application) :
+class SharedViewModel(application: Application) :
     AndroidViewModel(application) {
 
     private val usersRepository = UsersRepository(UserDatabase.getInstance(application))

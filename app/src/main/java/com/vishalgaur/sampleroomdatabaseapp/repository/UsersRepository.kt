@@ -7,7 +7,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 private const val TAG = "UsersRepository"
-class UsersRepository(val database: UserDatabase) {
+
+class UsersRepository(private val database: UserDatabase) {
 
     suspend fun refreshData() {
         withContext(Dispatchers.IO) {

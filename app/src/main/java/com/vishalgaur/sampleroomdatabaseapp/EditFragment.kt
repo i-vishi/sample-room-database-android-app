@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.vishalgaur.sampleroomdatabaseapp.database.UserData
-import com.vishalgaur.sampleroomdatabaseapp.database.UserDatabase
 import com.vishalgaur.sampleroomdatabaseapp.databinding.FragmentEditBinding
 import com.vishalgaur.sampleroomdatabaseapp.viewModel.SharedViewModel
 import com.vishalgaur.sampleroomdatabaseapp.viewModel.SharedViewModelFactory
@@ -33,8 +32,7 @@ class EditFragment : Fragment() {
 
         // initializing shared view model
         val application = requireNotNull(this.activity).application
-        val dataSource = UserDatabase.getInstance(application).userDao
-        val viewModelFactory = SharedViewModelFactory(dataSource, application)
+        val viewModelFactory = SharedViewModelFactory(application)
         sharedViewModel = ViewModelProvider(this, viewModelFactory).get(SharedViewModel::class.java)
 
         return binding.root

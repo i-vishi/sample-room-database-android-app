@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.vishalgaur.sampleroomdatabaseapp.database.UserDatabase
 import com.vishalgaur.sampleroomdatabaseapp.databinding.FragmentHomeBinding
 import com.vishalgaur.sampleroomdatabaseapp.viewModel.DataStatus
 import com.vishalgaur.sampleroomdatabaseapp.viewModel.SharedViewModel
@@ -27,8 +26,7 @@ class HomeFragment : Fragment() {
 
         // initializing shared view model
         val application = requireNotNull(this.activity).application
-        val dataSource = UserDatabase.getInstance(application).userDao
-        val viewModelFactory = SharedViewModelFactory(dataSource, application)
+        val viewModelFactory = SharedViewModelFactory(application)
         sharedViewModel = ViewModelProvider(this, viewModelFactory).get(SharedViewModel::class.java)
 
 
