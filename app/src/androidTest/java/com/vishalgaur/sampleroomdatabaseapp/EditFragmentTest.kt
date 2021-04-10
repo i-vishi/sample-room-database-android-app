@@ -1,5 +1,8 @@
 package com.vishalgaur.sampleroomdatabaseapp
 
+import android.app.DatePickerDialog
+import android.text.InputType
+import android.widget.DatePicker
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.navigation.NavController
@@ -9,11 +12,14 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.PickerActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
 import androidx.test.platform.app.InstrumentationRegistry
+import org.hamcrest.Matchers
+import org.hamcrest.Matchers.not
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -58,8 +64,15 @@ class EditFragmentTest {
     }
 
     @Test
-    fun userCanEnterDob() {
-        insertInDobEditText("01/01/2000")
+    fun userCanNotEnterDob() {
+        onView(withId(R.id.input_dob_edit_text)).perform(scrollTo())
+            .check(matches(not(isClickable())))
+    }
+
+    @Test
+    fun userCanSelectDate() {
+        insertInDobEditText(2002, 5, 21)
+        onView(withId(R.id.input_dob_edit_text)).check(matches(withText("21/05/2002")))
     }
 
     @Test
@@ -82,7 +95,7 @@ class EditFragmentTest {
         insertInNameEditText("Vishal Gaur")
         insertInMobileEditText("8468778954")
         insertInEmailEditText("vishal123456@somemail.com")
-        insertInDobEditText("11/11/1999")
+        insertInDobEditText(2002, 5, 21)
 
         clickSaveButton()
 
@@ -106,8 +119,14 @@ class EditFragmentTest {
     private fun insertInMobileEditText(mob: String) =
         onView(withId(R.id.input_mobile_edit_text)).perform(scrollTo(), clearText(), typeText(mob))
 
-    private fun insertInDobEditText(dob: String) =
-        onView(withId(R.id.input_dob_edit_text)).perform(scrollTo(), clearText(), typeText(dob))
+    private fun insertInDobEditText(year:Int, month:Int, dayOfMonth:Int) {
+        clickCalendarButton()
+        onView(withClassName(Matchers.equalTo(DatePicker::class.qualifiedName))).perform(PickerActions.setDate(year, month, dayOfMonth))
+        onView(withText("OK")).perform(click())
+    }
+
+    private fun clickCalendarButton() =
+        onView(withId(R.id.input_select_date_btn)).perform(scrollTo(), click())
 
     private fun clickCancelButton() =
         onView(withId(R.id.input_cancel_btn)).perform(scrollTo(), click())

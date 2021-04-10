@@ -15,7 +15,7 @@ private const val TAG = "SharedViewModel"
 
 enum class DataStatus { LOADING, LOADED, EMPTY }
 
-enum class ViewErrors { NONE, ERR_EMAIL, ERR_MOBILE, ERR_EMAIL_MOBILE, ERR_EMPTY }
+enum class ViewErrors { NONE, ERR_EMAIL, ERR_MOBILE, ERR_EMAIL_MOBILE, ERR_EMPTY, ERR_DATE, ERR_EMAIL_DATE, ERR_MOBILE_DATE, ERR_EMAIL_MOBILE_DATE }
 
 class SharedViewModel(application: Application) :
     AndroidViewModel(application) {
