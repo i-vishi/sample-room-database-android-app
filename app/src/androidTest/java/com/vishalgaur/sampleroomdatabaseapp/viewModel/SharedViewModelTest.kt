@@ -3,7 +3,7 @@ package com.vishalgaur.sampleroomdatabaseapp.viewModel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.vishalgaur.sampleroomdatabaseapp.getOrAwaitValue
+import com.vishalgaur.sampleroomdatabaseapp.ViewErrors
 import org.hamcrest.Matchers.*
 import org.junit.Assert.*
 import org.junit.Before

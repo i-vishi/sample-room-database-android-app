@@ -9,7 +9,6 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.vishalgaur.sampleroomdatabaseapp.databinding.FragmentHomeBinding
-import com.vishalgaur.sampleroomdatabaseapp.viewModel.DataStatus
 import com.vishalgaur.sampleroomdatabaseapp.viewModel.SharedViewModel
 import com.vishalgaur.sampleroomdatabaseapp.viewModel.SharedViewModelFactory
 

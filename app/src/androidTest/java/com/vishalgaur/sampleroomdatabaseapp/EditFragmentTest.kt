@@ -1,7 +1,5 @@
 package com.vishalgaur.sampleroomdatabaseapp
 
-import android.app.DatePickerDialog
-import android.text.InputType
 import android.widget.DatePicker
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
@@ -81,6 +79,16 @@ class EditFragmentTest {
     }
 
     @Test
+    fun onSave_empty_showError() {
+        insertInNameEditText("")
+        insertInMobileEditText("")
+        insertInEmailEditText("")
+        clickSaveButton()
+
+        onView(withId(R.id.input_save_btn)).check(matches(isDisplayed()))
+    }
+
+    @Test
     fun onSave_partiallyFilled_showError() {
         insertInMobileEditText("8989895656")
         insertInNameEditText("")
@@ -95,7 +103,7 @@ class EditFragmentTest {
         insertInNameEditText("Vishal Gaur")
         insertInMobileEditText("8468778954")
         insertInEmailEditText("vishal123456@somemail.com")
-        insertInDobEditText(2002, 5, 21)
+        insertInDobEditText(2012, 7, 2)
 
         clickSaveButton()
 
@@ -119,9 +127,11 @@ class EditFragmentTest {
     private fun insertInMobileEditText(mob: String) =
         onView(withId(R.id.input_mobile_edit_text)).perform(scrollTo(), clearText(), typeText(mob))
 
-    private fun insertInDobEditText(year:Int, month:Int, dayOfMonth:Int) {
+    private fun insertInDobEditText(year: Int, month: Int, dayOfMonth: Int) {
         clickCalendarButton()
-        onView(withClassName(Matchers.equalTo(DatePicker::class.qualifiedName))).perform(PickerActions.setDate(year, month, dayOfMonth))
+        onView(withClassName(Matchers.equalTo(DatePicker::class.qualifiedName))).perform(
+            PickerActions.setDate(year, month, dayOfMonth)
+        )
         onView(withText("OK")).perform(click())
     }
 

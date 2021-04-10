@@ -5,6 +5,9 @@ import java.util.regex.Pattern
 const val MOB_ERROR = "Enter valid mobile number!"
 const val EMAIL_ERROR = "Enter valid email address!"
 
+enum class DataStatus { LOADING, LOADED, EMPTY }
+
+enum class ViewErrors { NONE, ERR_EMAIL, ERR_MOBILE, ERR_EMAIL_MOBILE, ERR_EMPTY }
 
 internal fun isEmailValid(email: String): Boolean {
     val EMAIL_PATTERN = Pattern.compile(
@@ -31,7 +34,3 @@ internal fun isPhoneValid(phone: String): Boolean {
         PHONE_PATTERN.matcher(phone).matches()
     }
 }
-//
-//internal fun isDOBValid(dob: String): Boolean {
-//
-//}

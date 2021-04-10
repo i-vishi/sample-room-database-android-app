@@ -3,6 +3,8 @@ package com.vishalgaur.sampleroomdatabaseapp.viewModel
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
+import com.vishalgaur.sampleroomdatabaseapp.DataStatus
+import com.vishalgaur.sampleroomdatabaseapp.ViewErrors
 import com.vishalgaur.sampleroomdatabaseapp.database.UserData
 import com.vishalgaur.sampleroomdatabaseapp.database.UserDatabase
 import com.vishalgaur.sampleroomdatabaseapp.isEmailValid
@@ -12,10 +14,6 @@ import kotlinx.coroutines.launch
 import java.io.IOException
 
 private const val TAG = "SharedViewModel"
-
-enum class DataStatus { LOADING, LOADED, EMPTY }
-
-enum class ViewErrors { NONE, ERR_EMAIL, ERR_MOBILE, ERR_EMAIL_MOBILE, ERR_EMPTY, ERR_DATE, ERR_EMAIL_DATE, ERR_MOBILE_DATE, ERR_EMAIL_MOBILE_DATE }
 
 class SharedViewModel(application: Application) :
     AndroidViewModel(application) {

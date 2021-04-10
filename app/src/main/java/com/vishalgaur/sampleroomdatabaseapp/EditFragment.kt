@@ -13,7 +13,6 @@ import com.vishalgaur.sampleroomdatabaseapp.database.UserData
 import com.vishalgaur.sampleroomdatabaseapp.databinding.FragmentEditBinding
 import com.vishalgaur.sampleroomdatabaseapp.viewModel.SharedViewModel
 import com.vishalgaur.sampleroomdatabaseapp.viewModel.SharedViewModelFactory
-import com.vishalgaur.sampleroomdatabaseapp.viewModel.ViewErrors
 import java.text.SimpleDateFormat
 import java.util.*
 
