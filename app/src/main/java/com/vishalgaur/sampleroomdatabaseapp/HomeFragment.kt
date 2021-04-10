@@ -65,5 +65,6 @@ class HomeFragment : Fragment() {
         binding.homeConstraintLayout.visibility = homeVisibility
         binding.homeEmptyTextView.visibility = emptyTextVisibility
         binding.fabAddEdit.setImageResource(if (fabIcon) R.drawable.ic_edit_48 else R.drawable.ic_add_48)
+        binding.fabAddEdit.tag = if (fabIcon) R.drawable.ic_edit_48 else R.drawable.ic_add_48
     }
 }

@@ -3,8 +3,7 @@ package com.vishalgaur.sampleroomdatabaseapp.viewModel
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
-import com.vishalgaur.sampleroomdatabaseapp.DataStatus
-import com.vishalgaur.sampleroomdatabaseapp.ViewErrors
+import com.vishalgaur.sampleroomdatabaseapp.*
 import com.vishalgaur.sampleroomdatabaseapp.database.UserData
 import com.vishalgaur.sampleroomdatabaseapp.database.UserDatabase
 import com.vishalgaur.sampleroomdatabaseapp.isEmailValid
@@ -72,7 +71,7 @@ class SharedViewModel(application: Application) :
 //    }
 
     fun submitData(name: String, email: String, mobile: String, dob: String) {
-        if (name.isEmpty() || email.isEmpty() || mobile.isEmpty() || dob.isEmpty()) {
+        if (name.isBlank() || email.isBlank() || mobile.isBlank() || dob.isBlank()) {
             _status.value = DataStatus.EMPTY
             _errorStatus.value = ViewErrors.ERR_EMPTY
         } else {

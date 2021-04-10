@@ -8,6 +8,8 @@ import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.IdlingResource
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.PickerActions
@@ -18,6 +20,7 @@ import androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiT
 import androidx.test.platform.app.InstrumentationRegistry
 import org.hamcrest.Matchers
 import org.hamcrest.Matchers.not
+import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -29,18 +32,26 @@ import org.junit.runner.RunWith
 class EditFragmentTest {
     private lateinit var editScenario: FragmentScenario<EditFragment>
     private lateinit var navController: NavController
+    private lateinit var idlingResource: IdlingResource
 
     @Before
     fun setUp() {
-        editScenario =
-            launchFragmentInContainer(themeResId = R.style.Theme_SampleRoomDatabaseApp)
+        editScenario = launchFragmentInContainer(themeResId = R.style.Theme_SampleRoomDatabaseApp)
         navController = TestNavHostController(ApplicationProvider.getApplicationContext())
-
+        idlingResource = TestIdlingResource.countingIdlingResource
+        IdlingRegistry.getInstance().register(idlingResource)
         runOnUiThread {
             navController.setGraph(R.navigation.nav_graph)
             editScenario.onFragment {
-                it.view?.let { it1 -> Navigation.setViewNavController(it1, navController) }
+                Navigation.setViewNavController(it.requireView(), navController)
             }
+        }
+    }
+
+    @After
+    fun tearDown() {
+        idlingResource.let {
+            IdlingRegistry.getInstance().unregister(it)
         }
     }
 
@@ -79,6 +90,34 @@ class EditFragmentTest {
     }
 
     @Test
+    fun onLoad_noData_emptyEditTexts() {
+        editScenario.onFragment {
+            it.sharedViewModel.clearData()
+            it.sharedViewModel.userData.value
+        }
+        onView(withId(R.id.input_name_edit_text)).check(matches(withText("")))
+        onView(withId(R.id.input_email_edit_text)).check(matches(withText("")))
+        onView(withId(R.id.input_mobile_edit_text)).check(matches(withText("")))
+        onView(withId(R.id.input_dob_edit_text)).check(matches(withText("")))
+    }
+
+    @Test
+    fun onLoad_hasData_returnsFilledEditTexts() {
+        editScenario.onFragment {
+            val name = "Vishal"
+            val email = "   vishal@mail.com "
+            val mob = "  7056897878"
+            val dob = "11/05/1999"
+            it.sharedViewModel.submitData(name, email, mob, dob)
+            it.sharedViewModel.userData.getOrAwaitValue()
+        }
+        onView(withId(R.id.input_name_edit_text)).check(matches(withText("Vishal")))
+        onView(withId(R.id.input_email_edit_text)).check(matches(withText("vishal@mail.com")))
+        onView(withId(R.id.input_mobile_edit_text)).check(matches(withText("7056897878")))
+        onView(withId(R.id.input_dob_edit_text)).check(matches(withText("11/05/1999")))
+    }
+
+    @Test
     fun onSave_empty_showError() {
         insertInNameEditText("")
         insertInMobileEditText("")
@@ -104,7 +143,6 @@ class EditFragmentTest {
         insertInMobileEditText("8468778954")
         insertInEmailEditText("vishal123456@somemail.com")
         insertInDobEditText(2012, 7, 2)
-
         clickSaveButton()
 
         onView(withId(R.id.input_error_text_view))

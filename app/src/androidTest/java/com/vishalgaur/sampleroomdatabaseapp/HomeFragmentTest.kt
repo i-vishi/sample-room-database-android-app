@@ -20,6 +20,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.vishalgaur.sampleroomdatabaseapp.database.UserDao
 import com.vishalgaur.sampleroomdatabaseapp.database.UserDatabase
 import org.hamcrest.Matchers.`is`
+import org.hamcrest.Matchers.equalTo
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
@@ -41,7 +42,6 @@ class HomeFragmentTest {
         runOnUiThread {
             navController.setGraph(R.navigation.nav_graph)
             homeScenario.onFragment {
-                it.sharedViewModel.clearData()
                 Navigation.setViewNavController(it.requireView(), navController)
             }
         }
@@ -49,9 +49,14 @@ class HomeFragmentTest {
 
     @Test
     fun noData_showNothing() {
+        homeScenario.onFragment {
+            it.sharedViewModel.clearData()
+            it.sharedViewModel.userData.getOrAwaitValue()
+        }
         onView(withId(R.id.homeConstraintLayout))
             .check(matches(withEffectiveVisibility(Visibility.GONE)))
         onView(withId(R.id.homeEmptyTextView)).check(matches(isDisplayed()))
+        onView(withId(R.id.fabAddEdit)).check(matches(withTagValue(equalTo(R.drawable.ic_add_48))))
     }
 
     @Test
@@ -62,17 +67,17 @@ class HomeFragmentTest {
             val mob = "  7056897878"
             val dob = "11/11/1999"
             it.sharedViewModel.submitData(name, email, mob, dob)
+            it.sharedViewModel.userData.getOrAwaitValue()
         }
         onView(withId(R.id.homeEmptyTextView))
             .check(matches(withEffectiveVisibility(Visibility.GONE)))
         onView(withId(R.id.homeConstraintLayout)).check(matches(isDisplayed()))
+        onView(withId(R.id.fabAddEdit)).check(matches(withTagValue(equalTo(R.drawable.ic_edit_48))))
     }
 
     @Test
     fun onFabClick_navigateToEditFragment() {
-
         onView(withId(R.id.fabAddEdit)).perform(click())
-
         assertEquals(R.id.editFragment, navController.currentDestination?.id)
     }
 }

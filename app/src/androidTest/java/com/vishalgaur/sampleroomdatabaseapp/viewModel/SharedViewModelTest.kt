@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.vishalgaur.sampleroomdatabaseapp.ViewErrors
+import com.vishalgaur.sampleroomdatabaseapp.getOrAwaitValue
 import org.hamcrest.Matchers.*
 import org.junit.Assert.*
 import org.junit.Before
@@ -32,7 +33,7 @@ class SharedViewModelTest {
         val dob = "01/01/1999"
 
         sharedViewModel.submitData(name, email, mob, dob)
-        assertThat(sharedViewModel.errorStatus.value, `is`(ViewErrors.NONE))
+        assertThat(sharedViewModel.errorStatus.getOrAwaitValue(), `is`(ViewErrors.NONE))
     }
 
     @Test
@@ -43,7 +44,7 @@ class SharedViewModelTest {
         val dob = "01/01/1999"
 
         sharedViewModel.submitData(name, email, mob, dob)
-        assertThat(sharedViewModel.errorStatus.value, `is`(ViewErrors.ERR_EMAIL))
+        assertThat(sharedViewModel.errorStatus.getOrAwaitValue(), `is`(ViewErrors.ERR_EMAIL))
     }
 
     @Test
@@ -54,7 +55,7 @@ class SharedViewModelTest {
         val dob = "01/01/1999"
 
         sharedViewModel.submitData(name, email, mob, dob)
-        assertThat(sharedViewModel.errorStatus.value, `is`(ViewErrors.ERR_MOBILE))
+        assertThat(sharedViewModel.errorStatus.getOrAwaitValue(), `is`(ViewErrors.ERR_MOBILE))
     }
 
     @Test
@@ -65,18 +66,18 @@ class SharedViewModelTest {
         val dob = "01/01/1999"
 
         sharedViewModel.submitData(name, email, mob, dob)
-        assertThat(sharedViewModel.errorStatus.value, `is`(ViewErrors.ERR_EMAIL_MOBILE))
+        assertThat(sharedViewModel.errorStatus.getOrAwaitValue(), `is`(ViewErrors.ERR_EMAIL_MOBILE))
     }
 
     @Test
     fun submitData_noData_returnsEmptyError() {
         val name = ""
         val email = ""
-        val mob = "  70568911 "
-        val dob = "01/01/1999"
+        val mob = ""
+        val dob = ""
 
         sharedViewModel.submitData(name, email, mob, dob)
-        assertThat(sharedViewModel.errorStatus.value, `is`(ViewErrors.ERR_EMPTY))
+        assertThat(sharedViewModel.errorStatus.getOrAwaitValue(), `is`(ViewErrors.ERR_EMPTY))
     }
 
 }
