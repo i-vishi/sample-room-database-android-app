@@ -63,13 +63,13 @@ class EditFragment : Fragment() {
 
     private fun setViews() {
         binding.inputCancelBtn.setOnClickListener {
-            findNavController().navigate(R.id.actionGoBackToHome)
+            findNavController().navigateUp()
         }
 
         binding.inputSaveBtn.setOnClickListener {
             onSubmit()
             if (sharedViewModel.errorStatus.value == ViewErrors.NONE) {
-                findNavController().navigate(R.id.actionGoBackToHome)
+                findNavController().navigateUp()
             }
         }
 

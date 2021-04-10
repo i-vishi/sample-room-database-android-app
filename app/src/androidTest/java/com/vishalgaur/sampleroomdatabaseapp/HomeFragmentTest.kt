@@ -73,6 +73,6 @@ class HomeFragmentTest {
 
         onView(withId(R.id.fabAddEdit)).perform(click())
 
-        assertEquals(R.id.EditFragment, navController.currentDestination?.id)
+        assertEquals(R.id.editFragment, navController.currentDestination?.id)
     }
 }

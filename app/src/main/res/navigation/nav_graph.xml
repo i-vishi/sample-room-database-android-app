@@ -3,26 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/HomeFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
-        android:id="@+id/HomeFragment"
+        android:id="@+id/homeFragment"
         android:name="com.vishalgaur.sampleroomdatabaseapp.HomeFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_home">
 
         <action
             android:id="@+id/actionAddEditData"
-            app:destination="@id/EditFragment" />
+            app:destination="@id/editFragment" />
     </fragment>
     <fragment
-        android:id="@+id/EditFragment"
+        android:id="@+id/editFragment"
         android:name="com.vishalgaur.sampleroomdatabaseapp.EditFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_edit">
 
         <action
             android:id="@+id/actionGoBackToHome"
-            app:destination="@id/HomeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>
