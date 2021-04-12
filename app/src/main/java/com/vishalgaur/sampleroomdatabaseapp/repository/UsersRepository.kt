@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import com.vishalgaur.sampleroomdatabaseapp.database.UserData
 import com.vishalgaur.sampleroomdatabaseapp.database.UserDatabase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 private const val TAG = "UsersRepository"

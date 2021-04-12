@@ -8,8 +8,6 @@ import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.IdlingResource
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.PickerActions
@@ -20,7 +18,6 @@ import androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiT
 import androidx.test.platform.app.InstrumentationRegistry
 import org.hamcrest.Matchers
 import org.hamcrest.Matchers.not
-import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -30,155 +27,118 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 @MediumTest
 class EditFragmentTest {
-    private lateinit var editScenario: FragmentScenario<EditFragment>
-    private lateinit var navController: NavController
-    private lateinit var idlingResource: IdlingResource
+	private lateinit var editScenario: FragmentScenario<EditFragment>
+	private lateinit var navController: NavController
 
-    @Before
-    fun setUp() {
-        editScenario = launchFragmentInContainer(themeResId = R.style.Theme_SampleRoomDatabaseApp)
-        navController = TestNavHostController(ApplicationProvider.getApplicationContext())
-        idlingResource = TestIdlingResource.countingIdlingResource
-        IdlingRegistry.getInstance().register(idlingResource)
-        runOnUiThread {
-            navController.setGraph(R.navigation.nav_graph)
-            editScenario.onFragment {
-                Navigation.setViewNavController(it.requireView(), navController)
-            }
-        }
-    }
+	@Before
+	fun setUp() {
+		editScenario = launchFragmentInContainer(themeResId = R.style.Theme_SampleRoomDatabaseApp)
+		navController = TestNavHostController(ApplicationProvider.getApplicationContext())
 
-    @After
-    fun tearDown() {
-        idlingResource.let {
-            IdlingRegistry.getInstance().unregister(it)
-        }
-    }
+		runOnUiThread {
+			navController.setGraph(R.navigation.nav_graph)
+			editScenario.onFragment {
+				Navigation.setViewNavController(it.requireView(), navController)
+			}
+		}
+	}
 
-    @Test
-    fun useAppContext() {
-        // Context of the app under test.
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.vishalgaur.sampleroomdatabaseapp", appContext.packageName)
-    }
+	@Test
+	fun useAppContext() {
+		// Context of the app under test.
+		val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+		assertEquals("com.vishalgaur.sampleroomdatabaseapp", appContext.packageName)
+	}
 
-    @Test
-    fun userCanEnterName() {
-        insertInNameEditText("Vishal Gaur  ")
-    }
+	@Test
+	fun userCanEnterName() {
+		insertInNameEditText("Vishal Gaur  ")
+	}
 
-    @Test
-    fun userCanEnterEmail() {
-        insertInEmailEditText("vishal1236@somemail.com")
-    }
+	@Test
+	fun userCanEnterEmail() {
+		insertInEmailEditText("vishal1236@somemail.com")
+	}
 
-    @Test
-    fun userCanNotEnterDob() {
-        onView(withId(R.id.input_dob_edit_text)).perform(scrollTo())
-            .check(matches(not(isClickable())))
-    }
+	@Test
+	fun userCanNotEnterDob() {
+		onView(withId(R.id.input_dob_edit_text)).perform(scrollTo())
+				.check(matches(not(isClickable())))
+	}
 
-    @Test
-    fun userCanSelectDate() {
-        insertInDobEditText(2002, 5, 21)
-        onView(withId(R.id.input_dob_edit_text)).check(matches(withText("21/05/2002")))
-    }
+	@Test
+	fun userCanSelectDate() {
+		insertInDobEditText(2002, 5, 21)
+		onView(withId(R.id.input_dob_edit_text)).check(matches(withText("21/05/2002")))
+	}
 
-    @Test
-    fun userCanEnterMobile() {
-        insertInMobileEditText("8989895656")
-    }
+	@Test
+	fun userCanEnterMobile() {
+		insertInMobileEditText("8989895656")
+	}
 
-    @Test
-    fun onLoad_noData_emptyEditTexts() {
-        editScenario.onFragment {
-            it.sharedViewModel.clearData()
-            it.sharedViewModel.userData.value
-        }
-        onView(withId(R.id.input_name_edit_text)).check(matches(withText("")))
-        onView(withId(R.id.input_email_edit_text)).check(matches(withText("")))
-        onView(withId(R.id.input_mobile_edit_text)).check(matches(withText("")))
-        onView(withId(R.id.input_dob_edit_text)).check(matches(withText("")))
-    }
+	@Test
+	fun onSave_empty_showError() {
+		insertInNameEditText("")
+		insertInMobileEditText("")
+		insertInEmailEditText("")
+		clickSaveButton()
 
-    @Test
-    fun onLoad_hasData_returnsFilledEditTexts() {
-        editScenario.onFragment {
-            val name = "Vishal"
-            val email = "   vishal@mail.com "
-            val mob = "  7056897878"
-            val dob = "11/05/1999"
-            it.sharedViewModel.submitData(name, email, mob, dob)
-            it.sharedViewModel.userData.getOrAwaitValue()
-        }
-        onView(withId(R.id.input_name_edit_text)).check(matches(withText("Vishal")))
-        onView(withId(R.id.input_email_edit_text)).check(matches(withText("vishal@mail.com")))
-        onView(withId(R.id.input_mobile_edit_text)).check(matches(withText("7056897878")))
-        onView(withId(R.id.input_dob_edit_text)).check(matches(withText("11/05/1999")))
-    }
+		onView(withId(R.id.input_save_btn)).check(matches(isDisplayed()))
+	}
 
-    @Test
-    fun onSave_empty_showError() {
-        insertInNameEditText("")
-        insertInMobileEditText("")
-        insertInEmailEditText("")
-        clickSaveButton()
+	@Test
+	fun onSave_partiallyFilled_showError() {
+		insertInMobileEditText("8989895656")
+		insertInNameEditText("")
+		insertInEmailEditText("vishal1236@somemail.com")
+		clickSaveButton()
 
-        onView(withId(R.id.input_save_btn)).check(matches(isDisplayed()))
-    }
+		onView(withId(R.id.input_error_text_view)).check(matches(isDisplayed()))
+	}
 
-    @Test
-    fun onSave_partiallyFilled_showError() {
-        insertInMobileEditText("8989895656")
-        insertInNameEditText("")
-        insertInEmailEditText("vishal1236@somemail.com")
-        clickSaveButton()
+	@Test
+	fun onSave_completeAndValidForm_noErrorNavigateToHomeFragment() {
+		insertInNameEditText("Vishal Gaur")
+		insertInMobileEditText("8468778954")
+		insertInEmailEditText("vishal123456@somemail.com")
+		insertInDobEditText(2012, 7, 2)
+		clickSaveButton()
 
-        onView(withId(R.id.input_error_text_view)).check(matches(isDisplayed()))
-    }
+		onView(withId(R.id.input_error_text_view))
+				.check(matches(withEffectiveVisibility(Visibility.GONE)))
+		assertEquals(navController.currentDestination?.id, R.id.homeFragment)
+	}
 
-    @Test
-    fun onSave_completeAndValidForm_noErrorNavigateToHomeFragment() {
-        insertInNameEditText("Vishal Gaur")
-        insertInMobileEditText("8468778954")
-        insertInEmailEditText("vishal123456@somemail.com")
-        insertInDobEditText(2012, 7, 2)
-        clickSaveButton()
+	@Test
+	fun onCancel() {
+		clickCancelButton()
+		assertEquals(navController.currentDestination?.id, R.id.homeFragment)
+	}
 
-        onView(withId(R.id.input_error_text_view))
-            .check(matches(withEffectiveVisibility(Visibility.GONE)))
-        assertEquals(navController.currentDestination?.id, R.id.homeFragment)
-    }
+	private fun insertInNameEditText(name: String) =
+			onView(withId(R.id.input_name_edit_text)).perform(scrollTo(), clearText(), typeText(name))
 
-    @Test
-    fun onCancel() {
-        clickCancelButton()
-        assertEquals(navController.currentDestination?.id, R.id.homeFragment)
-    }
+	private fun insertInEmailEditText(email: String) =
+			onView(withId(R.id.input_email_edit_text)).perform(scrollTo(), clearText(), typeText(email))
 
-    private fun insertInNameEditText(name: String) =
-        onView(withId(R.id.input_name_edit_text)).perform(scrollTo(), clearText(), typeText(name))
+	private fun insertInMobileEditText(mob: String) =
+			onView(withId(R.id.input_mobile_edit_text)).perform(scrollTo(), clearText(), typeText(mob))
 
-    private fun insertInEmailEditText(email: String) =
-        onView(withId(R.id.input_email_edit_text)).perform(scrollTo(), clearText(), typeText(email))
-
-    private fun insertInMobileEditText(mob: String) =
-        onView(withId(R.id.input_mobile_edit_text)).perform(scrollTo(), clearText(), typeText(mob))
-
-    private fun insertInDobEditText(year: Int, month: Int, dayOfMonth: Int) {
-        clickCalendarButton()
-        onView(withClassName(Matchers.equalTo(DatePicker::class.qualifiedName))).perform(
-            PickerActions.setDate(year, month, dayOfMonth)
+	private fun insertInDobEditText(year: Int, month: Int, dayOfMonth: Int) {
+		clickCalendarButton()
+		onView(withClassName(Matchers.equalTo(DatePicker::class.qualifiedName))).perform(
+                PickerActions.setDate(year, month, dayOfMonth)
         )
-        onView(withText("OK")).perform(click())
-    }
+		onView(withText("OK")).perform(click())
+	}
 
-    private fun clickCalendarButton() =
-        onView(withId(R.id.input_select_date_btn)).perform(scrollTo(), click())
+	private fun clickCalendarButton() =
+			onView(withId(R.id.input_select_date_btn)).perform(scrollTo(), click())
 
-    private fun clickCancelButton() =
-        onView(withId(R.id.input_cancel_btn)).perform(scrollTo(), click())
+	private fun clickCancelButton() =
+			onView(withId(R.id.input_cancel_btn)).perform(scrollTo(), click())
 
-    private fun clickSaveButton() =
-        onView(withId(R.id.input_save_btn)).perform(scrollTo(), click())
+	private fun clickSaveButton() =
+			onView(withId(R.id.input_save_btn)).perform(scrollTo(), click())
 }
