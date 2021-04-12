@@ -25,6 +25,17 @@ class SharedViewModelTest {
     }
 
     @Test
+    fun submitData_noData_returnsEmptyError() {
+        val name = ""
+        val email = ""
+        val mob = ""
+        val dob = ""
+
+        sharedViewModel.submitData(name, email, mob, dob)
+        assertThat(sharedViewModel.errorStatus.getOrAwaitValue(), `is`(ViewErrors.ERR_EMPTY))
+    }
+
+    @Test
     fun submitData_allValid_returnsNoError() {
         val name = "Vishal"
         val email = "   vishal@mail.com "
@@ -67,16 +78,4 @@ class SharedViewModelTest {
         sharedViewModel.submitData(name, email, mob, dob)
         assertThat(sharedViewModel.errorStatus.getOrAwaitValue(), `is`(ViewErrors.ERR_EMAIL_MOBILE))
     }
-
-    @Test
-    fun submitData_noData_returnsEmptyError() {
-        val name = ""
-        val email = ""
-        val mob = ""
-        val dob = ""
-
-        sharedViewModel.submitData(name, email, mob, dob)
-        assertThat(sharedViewModel.errorStatus.getOrAwaitValue(), `is`(ViewErrors.ERR_EMPTY))
-    }
-
 }
