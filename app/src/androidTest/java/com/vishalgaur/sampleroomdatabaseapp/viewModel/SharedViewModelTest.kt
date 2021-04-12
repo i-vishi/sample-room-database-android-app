@@ -22,7 +22,6 @@ class SharedViewModelTest {
     @Before
     fun setUp() {
         sharedViewModel = SharedViewModel(ApplicationProvider.getApplicationContext())
-//        sharedViewModel.clearData()
     }
 
     @Test
