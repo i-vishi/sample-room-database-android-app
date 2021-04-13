@@ -77,31 +77,75 @@ class HomeFragmentTest {
 
 	@Test
 	fun userCanEnterInSearch() {
-	    insertInSearchEditText("789")
+		insertInSearchEditText("789")
 	}
 
-    @Test
-    fun userCanClickSearch() {
-        clickSearchButton()
-    }
+	@Test
+	fun userCanClickSearch() {
+		clickSearchButton()
+	}
 
-    @Test
-    fun onSearch_validId_returnsData() {
-        homeScenario.onFragment {
-            val id = "1234"
-            val name = "Vishal"
-            val email = "   vishal@mail.com "
-            val mob = "  7056897878"
-            val dob = "11/11/1999"
-            it.sharedViewModel.submitData(id, name, email, mob, dob)
-            it.sharedViewModel.status.getOrAwaitValue()
-        }
-        insertInSearchEditText("1234")
-        clickSearchButton()
+	@Test
+	fun onSearch_validId_returnsData() {
+		val id = "1234"
+		val name = "Vishal"
+		val email = "   vishal@mail.com "
+		val mob = "  7056897878"
+		val dob = "11/11/1999"
+		homeScenario.onFragment {
+			it.sharedViewModel.submitData(id, name, email, mob, dob)
+			it.sharedViewModel.status.getOrAwaitValue()
+		}
+		insertInSearchEditText("1234")
+		clickSearchButton()
 
-        onView(withId(R.id.data_layout)).check(matches(isDisplayed()))
-        onView(withId(R.id.homeEmptyTextView)).check(matches(not(isDisplayed())))
-    }
+		onView(withId(R.id.search_error_text_view)).check(matches(not(isDisplayed())))
+		onView(withId(R.id.data_layout)).check(matches(isDisplayed()))
+		onView(withId(R.id.homeEmptyTextView)).check(matches(not(isDisplayed())))
+		onView(withId(R.id.detail_id)).check(matches(withText(id)))
+	}
+
+	@Test
+	fun onSearch_invalidId_returnsError() {
+		insertInSearchEditText("00045s")
+		clickSearchButton()
+
+		onView(withId(R.id.search_error_text_view))
+				.check(matches(isDisplayed()))
+				.check(matches(withText("Input Correct ID")))
+		onView(withId(R.id.data_layout)).check(matches(not(isDisplayed())))
+	}
+
+	@Test
+	fun onSearch_empty_returnsError() {
+		insertInSearchEditText("")
+		clickSearchButton()
+
+		onView(withId(R.id.search_error_text_view))
+				.check(matches(isDisplayed()))
+				.check(matches(withText("ID can not be blank")))
+		onView(withId(R.id.data_layout)).check(matches(not(isDisplayed())))
+	}
+
+	@Test
+	fun onSearch_validAndNotExists_returnsError() {
+		val id = "1234"
+		val name = "Vishal"
+		val email = "   vishal@mail.com "
+		val mob = "  7056897878"
+		val dob = "11/11/1999"
+		homeScenario.onFragment {
+			it.sharedViewModel.submitData(id, name, email, mob, dob)
+			it.sharedViewModel.status.getOrAwaitValue()
+		}
+		insertInSearchEditText("14")
+		clickSearchButton()
+
+		onView(withId(R.id.search_error_text_view))
+				.check(matches(isDisplayed()))
+				.check(matches(withText("Not Found!")))
+		onView(withId(R.id.data_layout)).check(matches(not(isDisplayed())))
+	}
 
 	private fun insertInSearchEditText(query: String) =
 			onView(withId(R.id.search_box_edit_text)).perform(clearText(), typeText(query))
