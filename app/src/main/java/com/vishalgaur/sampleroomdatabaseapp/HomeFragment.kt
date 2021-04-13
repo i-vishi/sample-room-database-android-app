@@ -85,6 +85,7 @@ class HomeFragment : Fragment() {
         sharedViewModel.searchedData.observe(viewLifecycleOwner, { searchResult ->
             if (searchResult != null) {
                 setHomeView()
+                binding.detailId.text = searchResult.userId.toString()
                 binding.detailName.text = searchResult.userName
                 binding.detailEmail.text = searchResult.userEmail
                 binding.detailMobile.text = searchResult.userMobile
