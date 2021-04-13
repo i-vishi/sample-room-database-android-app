@@ -12,7 +12,7 @@
         tools:context=".HomeFragment">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/search_box_edit_text"
+            android:id="@+id/search_box_edit_layout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -27,6 +27,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/search_box_edit_text"
                 android:inputType="number" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -37,9 +38,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:text="@string/search_btn_text"
-            app:layout_constraintBottom_toBottomOf="@+id/search_box_edit_text"
+            app:layout_constraintBottom_toBottomOf="@+id/search_box_edit_layout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/search_box_edit_text" />
+            app:layout_constraintTop_toTopOf="@+id/search_box_edit_layout" />
 
         <TextView
             android:id="@+id/search_error_text_view"
@@ -47,7 +48,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:drawableStart="@drawable/ic_error_outline_24"
             android:drawablePadding="8dp"
             android:fontFamily="serif"
             android:gravity="start|fill_vertical"
@@ -55,91 +55,102 @@
             android:textAllCaps="false"
             android:textColor="#FF0000"
             android:textSize="18sp"
+            app:drawableStartCompat="@drawable/ic_error_outline_24"
             app:drawableTint="#FF0000"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_box_edit_text" />
+            app:layout_constraintTop_toBottomOf="@+id/search_box_edit_layout" />
 
-
-        <TextView
-            android:id="@+id/detail_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="32dp"
-            android:text="@string/detail_title_text"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display3"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_error_text_view" />
-
-        <TextView
-            android:id="@+id/detail_name"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/data_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
             android:layout_marginTop="32dp"
-            android:layout_marginEnd="24dp"
-            android:drawablePadding="8dp"
-            android:gravity="center"
-            android:padding="4dp"
-            android:textSize="24sp"
-            app:drawableStartCompat="@drawable/ic_person_48"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_title"
-            tools:text="Some Name" />
+            app:layout_constraintTop_toBottomOf="@+id/search_error_text_view">
 
-        <TextView
-            android:id="@+id/detail_email"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp"
-            android:drawablePadding="8dp"
-            android:gravity="center"
-            android:padding="4dp"
-            android:textSize="24sp"
-            app:drawableStartCompat="@drawable/ic_email_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_name"
-            tools:text="someone@example.com" />
+            <TextView
+                android:id="@+id/detail_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="32dp"
+                android:text="@string/detail_title_text"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/data_layout" />
 
-        <TextView
-            android:id="@+id/detail_mobile"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp"
-            android:drawablePadding="8dp"
-            android:gravity="center"
-            android:padding="4dp"
-            android:textSize="24sp"
-            app:drawableStartCompat="@drawable/ic_phone_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_email"
-            tools:text="1234567890" />
+            <TextView
+                android:id="@+id/detail_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="24dp"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:padding="4dp"
+                android:textSize="24sp"
+                app:drawableStartCompat="@drawable/ic_person_48"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detail_title"
+                tools:text="Some Name" />
 
-        <TextView
-            android:id="@+id/detail_dob"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="24dp"
-            android:drawablePadding="8dp"
-            android:gravity="center"
-            android:padding="4dp"
-            android:textSize="24sp"
-            app:drawableStartCompat="@drawable/ic_cake_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detail_mobile"
-            tools:text="Jan 01, 1999" />
+            <TextView
+                android:id="@+id/detail_email"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:padding="4dp"
+                android:textSize="24sp"
+                app:drawableStartCompat="@drawable/ic_email_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detail_name"
+                tools:text="someone@example.com" />
+
+            <TextView
+                android:id="@+id/detail_mobile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:padding="4dp"
+                android:textSize="24sp"
+                app:drawableStartCompat="@drawable/ic_phone_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detail_email"
+                tools:text="1234567890" />
+
+            <TextView
+                android:id="@+id/detail_dob"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="24dp"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:padding="4dp"
+                android:textSize="24sp"
+                app:drawableStartCompat="@drawable/ic_cake_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detail_mobile"
+                tools:text="Jan 01, 1999" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <!--        <androidx.recyclerview.widget.RecyclerView-->

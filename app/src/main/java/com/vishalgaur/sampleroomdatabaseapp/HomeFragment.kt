@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.vishalgaur.sampleroomdatabaseapp.databinding.FragmentHomeBinding
@@ -31,16 +32,36 @@ class HomeFragment : Fragment() {
         val viewModelFactory = SharedViewModelFactory(application)
         sharedViewModel = ViewModelProvider(this, viewModelFactory).get(SharedViewModel::class.java)
 
+        setObservers()
+
+        setViews()
 
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun setViews() {
+        binding.fabAddEdit.setOnClickListener {
+            findNavController().navigate(R.id.actionAddEditData)
+        }
+
+        binding.dataLayout.visibility = View.GONE
+
+        binding.searchBtn.setOnClickListener {
+            onSearch()
+        }
+    }
+
+    private fun onSearch() {
+        val query = binding.searchBoxEditText.text.toString()
+
+        sharedViewModel.searchData(query)
+    }
+
+    private fun setObservers() {
         sharedViewModel.status.observe(viewLifecycleOwner, { status ->
             when (status) {
-                DataStatus.LOADED -> setHomeView()
-                else -> setHomeView(View.GONE, View.VISIBLE, false)
+                DataStatus.LOADED -> setTextView()
+                else -> setTextView(false)
             }
         })
 
@@ -53,19 +74,42 @@ class HomeFragment : Fragment() {
                 binding.detailDob.text = userData.userDOB
             }
         })
-        binding.fabAddEdit.setOnClickListener {
-            findNavController().navigate(R.id.actionAddEditData)
+        sharedViewModel.searchErrStatus.observe(viewLifecycleOwner, { searchStatus ->
+            when (searchStatus) {
+                SearchErrors.NONE -> setSearchViews(searchStatus, View.GONE)
+                else -> setSearchViews(searchStatus, View.VISIBLE)
+            }
+        })
+    }
+
+    private fun setSearchViews(errors: SearchErrors, errVisibility: Int) {
+        binding.searchErrorTextView.visibility = errVisibility
+        when (errors) {
+            SearchErrors.NONE -> Unit
+            SearchErrors.ERR_INVALID -> binding.searchErrorTextView.text =
+                getString(R.string.search_invalid_query_text)
+            SearchErrors.ERR_EMPTY -> binding.searchErrorTextView.text =
+                getString(R.string.search_not_found_text)
         }
     }
 
-    private fun setHomeView(
-        homeVisibility: Int = View.VISIBLE,
-        emptyTextVisibility: Int = View.GONE,
-        fabIcon: Boolean = true
-    ) {
-        binding.homeConstraintLayout.visibility = homeVisibility
-        binding.homeEmptyTextView.visibility = emptyTextVisibility
-        binding.fabAddEdit.setImageResource(if (fabIcon) R.drawable.ic_edit_48 else R.drawable.ic_add_48)
-        binding.fabAddEdit.tag = if (fabIcon) R.drawable.ic_edit_48 else R.drawable.ic_add_48
+    private fun setTextView(hasData: Boolean? = true) {
+        binding.homeEmptyTextView.apply {
+            when (hasData) {
+                true -> {
+                    setText(R.string.detail_search_true_text)
+                    setCompoundDrawables(null, null, null, null)
+                }
+                false -> {
+                    setText(R.string.detail_empty_text)
+                    setCompoundDrawables(
+                        null,
+                        getDrawable(context, R.drawable.ic_error_outline_64),
+                        null,
+                        null
+                    )
+                }
+            }
+        }
     }
 }
