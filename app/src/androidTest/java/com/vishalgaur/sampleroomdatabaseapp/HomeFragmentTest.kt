@@ -61,7 +61,7 @@ class HomeFragmentTest {
 			val mob = "  7056897878"
 			val dob = "11/11/1999"
 			it.sharedViewModel.submitData(id, name, email, mob, dob)
-			it.sharedViewModel.status.getOrAwaitValue()
+			it.sharedViewModel.userData.getOrAwaitValue()
 		}
 		onView(withId(R.id.data_layout))
 				.check(matches(withEffectiveVisibility(Visibility.GONE)))

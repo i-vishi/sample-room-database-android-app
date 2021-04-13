@@ -110,12 +110,12 @@ class SharedViewModelTest {
 	@Test
 	fun setStatus_true_returnsLoaded() {
 		sharedViewModel.setStatus(true)
-		assertThat(sharedViewModel.status.getOrAwaitValue(), `is`(DataStatus.LOADED))
+		assertThat(sharedViewModel.status.value, `is`(DataStatus.LOADED))
 	}
 
 	@Test
 	fun setStatus_false_returnsEmpty() {
 		sharedViewModel.setStatus(false)
-		assertThat(sharedViewModel.status.getOrAwaitValue(), `is`(DataStatus.EMPTY))
+		assertThat(sharedViewModel.status.value, `is`(DataStatus.EMPTY))
 	}
 }
