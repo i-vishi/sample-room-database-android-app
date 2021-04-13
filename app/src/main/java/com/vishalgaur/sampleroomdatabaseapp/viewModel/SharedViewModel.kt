@@ -89,8 +89,8 @@ class SharedViewModel(application: Application) :
         }
     }
 
-    fun submitData(name: String, email: String, mobile: String, dob: String) {
-        if (name.isBlank() || email.isBlank() || mobile.isBlank() || dob.isBlank()) {
+    fun submitData(id: String, name: String, email: String, mobile: String, dob: String) {
+        if (id.isBlank() || name.isBlank() || email.isBlank() || mobile.isBlank() || dob.isBlank()) {
             _status.value = DataStatus.EMPTY
             _errorStatus.value = ViewErrors.ERR_EMPTY
         } else {
@@ -103,16 +103,11 @@ class SharedViewModel(application: Application) :
             }
             when (err) {
                 "ERROR" -> {
-                    val newData = UserData(
-                        userName = name.trim(),
-                        userEmail = email.trim(),
-                        userMobile = mobile.trim(),
-                        userDOB = dob
-                    )
-                    insertData(newData)
                     _errorStatus.value = ViewErrors.NONE
                     _status.value = DataStatus.LOADED
-
+                    val newData =
+                        UserData(id.toLong(), name.trim(), email.trim(), mobile.trim(), dob)
+                    insertData(newData)
                 }
                 "ERROR_EMAIL" -> _errorStatus.value = ViewErrors.ERR_EMAIL
                 "ERROR_MOBILE" -> _errorStatus.value = ViewErrors.ERR_MOBILE

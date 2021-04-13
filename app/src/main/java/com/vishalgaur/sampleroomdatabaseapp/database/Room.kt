@@ -15,7 +15,7 @@ interface UserDao {
     @Query("DELETE FROM userTable")
     fun clear()
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(uData: UserData)
 
     @Query("SELECT * FROM userTable WHERE userId = :userId")

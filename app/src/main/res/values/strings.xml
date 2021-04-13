@@ -33,4 +33,6 @@
     <string name="search_invalid_query_text">Input Correct ID</string>
     <string name="search_empty_query_text">ID can not be blank</string>
     <string name="search_btn_text">Search</string>
+    <string name="input_id_label_text">User ID</string>
+    <string name="hint_id">123</string>
 </resources>

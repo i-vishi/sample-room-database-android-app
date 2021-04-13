@@ -37,25 +37,14 @@ class EditFragment : Fragment() {
         val viewModelFactory = SharedViewModelFactory(application)
         sharedViewModel = ViewModelProvider(this, viewModelFactory).get(SharedViewModel::class.java)
 
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
         setViews()
 
         setObservers()
+
+        return binding.root
     }
 
     private fun setObservers() {
-        sharedViewModel.userData.observe(viewLifecycleOwner, { userData ->
-            sharedViewModel.setStatus(userData != null)
-            if (userData != null) {
-                fillTextView(userData)
-            }
-        })
-
         sharedViewModel.errorStatus.observe(viewLifecycleOwner, { err ->
             modifyErrors(err)
         })
@@ -109,19 +98,13 @@ class EditFragment : Fragment() {
     }
 
     private fun onSubmit() {
+        val id = binding.inputIdEditText.text.toString()
         val name = binding.inputNameEditText.text.toString()
         val email = binding.inputEmailEditText.text.toString()
         val mobile = binding.inputMobileEditText.text.toString()
         val dob = binding.inputDobEditText.text.toString()
 
-        sharedViewModel.submitData(name, email, mobile, dob)
-    }
-
-    private fun fillTextView(userData: UserData) {
-        binding.inputNameEditText.setText(userData.userName)
-        binding.inputEmailEditText.setText(userData.userEmail)
-        binding.inputMobileEditText.setText(userData.userMobile)
-        binding.inputDobEditText.setText(userData.userDOB)
+        sharedViewModel.submitData(id, name, email, mobile, dob)
     }
 
     private fun modifyErrors(err: ViewErrors) {
