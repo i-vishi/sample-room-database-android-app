@@ -31,5 +31,6 @@
     <string name="search_hint_label">User ID</string>
     <string name="search_not_found_text">Not Found!</string>
     <string name="search_invalid_query_text">Input Correct ID</string>
+    <string name="search_empty_query_text">ID can not be blank</string>
     <string name="search_btn_text">Search</string>
 </resources>

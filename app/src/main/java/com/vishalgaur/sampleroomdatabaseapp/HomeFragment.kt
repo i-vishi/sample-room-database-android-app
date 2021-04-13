@@ -1,10 +1,13 @@
 package com.vishalgaur.sampleroomdatabaseapp
 
+import android.app.Activity
+import android.inputmethodservice.InputMethodService
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.lifecycle.ViewModelProvider
@@ -53,7 +56,10 @@ class HomeFragment : Fragment() {
 
     private fun onSearch() {
         val query = binding.searchBoxEditText.text.toString()
-
+        (context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
+            view?.windowToken,
+            0
+        )
         sharedViewModel.searchData(query)
     }
 
@@ -67,19 +73,31 @@ class HomeFragment : Fragment() {
 
         sharedViewModel.userData.observe(viewLifecycleOwner, { userData ->
             sharedViewModel.setStatus(userData != null)
-            if (userData != null) {
-                binding.detailName.text = userData.userName
-                binding.detailEmail.text = userData.userEmail
-                binding.detailMobile.text = userData.userMobile
-                binding.detailDob.text = userData.userDOB
-            }
         })
+
         sharedViewModel.searchErrStatus.observe(viewLifecycleOwner, { searchStatus ->
             when (searchStatus) {
                 SearchErrors.NONE -> setSearchViews(searchStatus, View.GONE)
                 else -> setSearchViews(searchStatus, View.VISIBLE)
             }
         })
+
+        sharedViewModel.searchedData.observe(viewLifecycleOwner, { searchResult ->
+            if (searchResult != null) {
+                setHomeView()
+                binding.detailName.text = searchResult.userName
+                binding.detailEmail.text = searchResult.userEmail
+                binding.detailMobile.text = searchResult.userMobile
+                binding.detailDob.text = searchResult.userDOB
+            } else {
+                setHomeView(View.GONE, View.VISIBLE)
+            }
+        })
+    }
+
+    private fun setHomeView(dataVisibility: Int = View.VISIBLE, textVisibility: Int = View.GONE) {
+        binding.dataLayout.visibility = dataVisibility
+        binding.homeEmptyTextView.visibility = textVisibility
     }
 
     private fun setSearchViews(errors: SearchErrors, errVisibility: Int) {
@@ -89,6 +107,8 @@ class HomeFragment : Fragment() {
             SearchErrors.ERR_INVALID -> binding.searchErrorTextView.text =
                 getString(R.string.search_invalid_query_text)
             SearchErrors.ERR_EMPTY -> binding.searchErrorTextView.text =
+                getString(R.string.search_empty_query_text)
+            SearchErrors.ERR_NOT_FOUND -> binding.searchErrorTextView.text =
                 getString(R.string.search_not_found_text)
         }
     }

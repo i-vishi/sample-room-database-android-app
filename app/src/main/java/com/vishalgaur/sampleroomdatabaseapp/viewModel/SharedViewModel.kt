@@ -3,7 +3,6 @@ package com.vishalgaur.sampleroomdatabaseapp.viewModel
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
-import androidx.test.core.app.ApplicationProvider
 import com.vishalgaur.sampleroomdatabaseapp.*
 import com.vishalgaur.sampleroomdatabaseapp.database.UserData
 import com.vishalgaur.sampleroomdatabaseapp.database.UserDatabase
@@ -76,6 +75,7 @@ class SharedViewModel(application: Application) :
     }
 
     fun searchData(userId: String) {
+        Log.d(TAG, "QUERY: $userId")
         when {
             userId.isBlank() -> {
                 _searchErrStatus.value = SearchErrors.ERR_EMPTY
@@ -138,7 +138,10 @@ class SharedViewModel(application: Application) :
     private fun getData(uId: Long) {
         viewModelScope.launch {
             _searchErrStatus.value = SearchErrors.NONE
-            usersRepository.uDataById(uId)
+            _searchedData.value = usersRepository.uDataById(uId)
+            if (_searchedData.value == null) {
+                _searchErrStatus.value = SearchErrors.ERR_NOT_FOUND
+            }
         }
     }
 }

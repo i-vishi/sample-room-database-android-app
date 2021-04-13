@@ -9,7 +9,7 @@ enum class DataStatus { LOADING, LOADED, EMPTY }
 
 enum class ViewErrors { NONE, ERR_EMAIL, ERR_MOBILE, ERR_EMAIL_MOBILE, ERR_EMPTY }
 
-enum class SearchErrors {NONE, ERR_EMPTY, ERR_INVALID}
+enum class SearchErrors {NONE, ERR_EMPTY, ERR_INVALID, ERR_NOT_FOUND}
 
 internal fun isEmailValid(email: String): Boolean {
     val EMAIL_PATTERN = Pattern.compile(
