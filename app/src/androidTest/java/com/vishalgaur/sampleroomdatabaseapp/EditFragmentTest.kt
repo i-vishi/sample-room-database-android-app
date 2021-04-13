@@ -51,6 +51,11 @@ class EditFragmentTest {
 	}
 
 	@Test
+	fun userCanEnterId() {
+		insertInIdEditText("12345")
+	}
+
+	@Test
 	fun userCanEnterName() {
 		insertInNameEditText("Vishal Gaur  ")
 	}
@@ -79,6 +84,7 @@ class EditFragmentTest {
 
 	@Test
 	fun onSave_empty_showError() {
+		insertInIdEditText("")
 		insertInNameEditText("")
 		insertInMobileEditText("")
 		insertInEmailEditText("")
@@ -99,6 +105,7 @@ class EditFragmentTest {
 
 	@Test
 	fun onSave_completeAndValidForm_noErrorNavigateToHomeFragment() {
+		insertInIdEditText("213")
 		insertInNameEditText("Vishal Gaur")
 		insertInMobileEditText("8468778954")
 		insertInEmailEditText("vishal123456@somemail.com")
@@ -115,6 +122,10 @@ class EditFragmentTest {
 		clickCancelButton()
 		assertEquals(navController.currentDestination?.id, R.id.homeFragment)
 	}
+
+	private fun insertInIdEditText(name: String) =
+			onView(withId(R.id.input_id_edit_text)).perform(scrollTo(), clearText(), typeText(name))
+
 
 	private fun insertInNameEditText(name: String) =
 			onView(withId(R.id.input_name_edit_text)).perform(scrollTo(), clearText(), typeText(name))
