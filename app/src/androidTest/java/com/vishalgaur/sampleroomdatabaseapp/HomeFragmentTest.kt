@@ -50,21 +50,21 @@ class HomeFragmentTest {
         onView(withId(R.id.fabAddEdit)).check(matches(withTagValue(equalTo(R.drawable.ic_add_48))))
     }
 
-    @Test
-    fun hasData_showLayout() {
-        homeScenario.onFragment {
-            val name = "Vishal"
-            val email = "   vishal@mail.com "
-            val mob = "  7056897878"
-            val dob = "11/11/1999"
-            it.sharedViewModel.submitData(name, email, mob, dob)
-            it.sharedViewModel.userData.getOrAwaitValue()
-        }
-        onView(withId(R.id.homeEmptyTextView))
-            .check(matches(withEffectiveVisibility(Visibility.GONE)))
-        onView(withId(R.id.homeConstraintLayout)).check(matches(isDisplayed()))
-        onView(withId(R.id.fabAddEdit)).check(matches(withTagValue(equalTo(R.drawable.ic_edit_48))))
-    }
+//    @Test
+//    fun hasData_showLayout() {
+//        homeScenario.onFragment {
+//            val name = "Vishal"
+//            val email = "   vishal@mail.com "
+//            val mob = "  7056897878"
+//            val dob = "11/11/1999"
+//            it.sharedViewModel.submitData(name, email, mob, dob)
+//            it.sharedViewModel.userData.getOrAwaitValue()
+//        }
+//        onView(withId(R.id.homeEmptyTextView))
+//            .check(matches(withEffectiveVisibility(Visibility.GONE)))
+//        onView(withId(R.id.homeConstraintLayout)).check(matches(isDisplayed()))
+//        onView(withId(R.id.fabAddEdit)).check(matches(withTagValue(equalTo(R.drawable.ic_edit_48))))
+//    }
 
     @Test
     fun onFabClick_navigateToEditFragment() {

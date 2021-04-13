@@ -94,24 +94,25 @@ class SharedViewModel(application: Application) :
             _status.value = DataStatus.EMPTY
             _errorStatus.value = ViewErrors.ERR_EMPTY
         } else {
-            var err = "ERROR"
+            var err = ERR_INIT
             if (!isEmailValid(email)) {
-                err += "_EMAIL"
+                err += ERR_EMAIL
             }
             if (!isPhoneValid(mobile)) {
-                err += "_MOBILE"
+                err += ERR_MOBILE
             }
             when (err) {
-                "ERROR" -> {
+                ERR_INIT -> {
                     _errorStatus.value = ViewErrors.NONE
                     _status.value = DataStatus.LOADED
                     val newData =
                         UserData(id.toLong(), name.trim(), email.trim(), mobile.trim(), dob)
                     insertData(newData)
                 }
-                "ERROR_EMAIL" -> _errorStatus.value = ViewErrors.ERR_EMAIL
-                "ERROR_MOBILE" -> _errorStatus.value = ViewErrors.ERR_MOBILE
-                "ERROR_EMAIL_MOBILE" -> _errorStatus.value = ViewErrors.ERR_EMAIL_MOBILE
+                (ERR_INIT + ERR_EMAIL) -> _errorStatus.value = ViewErrors.ERR_EMAIL
+                (ERR_INIT + ERR_MOBILE) -> _errorStatus.value = ViewErrors.ERR_MOBILE
+                (ERR_INIT + ERR_EMAIL + ERR_MOBILE) -> _errorStatus.value =
+                    ViewErrors.ERR_EMAIL_MOBILE
             }
         }
     }

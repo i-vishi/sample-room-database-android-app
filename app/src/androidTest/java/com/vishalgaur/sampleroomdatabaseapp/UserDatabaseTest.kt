@@ -6,8 +6,11 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.vishalgaur.sampleroomdatabaseapp.database.UserDao
 import com.vishalgaur.sampleroomdatabaseapp.database.UserData
 import com.vishalgaur.sampleroomdatabaseapp.database.UserDatabase
+import org.hamcrest.Matchers.`is`
+import org.hamcrest.Matchers.nullValue
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -47,8 +50,14 @@ class UserDatabaseTest {
             "01/01/1999"
         )
         userDao.insert(user)
-        val getUser = userDao.get("9879879879")
+        val getUser = userDao.getById(123)
         assertEquals(getUser, user)
+    }
+
+    @Test
+    fun noData_returnsNull() {
+        val result = userDao.getNewData()
+        assertThat(result.value, `is`(nullValue()))
     }
 
 }

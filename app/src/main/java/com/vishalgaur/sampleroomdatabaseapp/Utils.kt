@@ -4,7 +4,9 @@ import java.util.regex.Pattern
 
 const val MOB_ERROR = "Enter valid mobile number!"
 const val EMAIL_ERROR = "Enter valid email address!"
-
+const val ERR_INIT = "ERROR"
+const val ERR_EMAIL = "_EMAIL"
+const val ERR_MOBILE = "_MOBILE"
 enum class DataStatus { LOADING, LOADED, EMPTY }
 
 enum class ViewErrors { NONE, ERR_EMAIL, ERR_MOBILE, ERR_EMAIL_MOBILE, ERR_EMPTY }
