@@ -45,6 +45,7 @@ class HomeFragment : Fragment() {
         })
 
         sharedViewModel.userData.observe(viewLifecycleOwner, { userData ->
+            sharedViewModel.setStatus(userData != null)
             if (userData != null) {
                 binding.detailName.text = userData.userName
                 binding.detailEmail.text = userData.userEmail

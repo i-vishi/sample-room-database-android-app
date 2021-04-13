@@ -3,6 +3,7 @@ package com.vishalgaur.sampleroomdatabaseapp.viewModel
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
+import androidx.test.core.app.ApplicationProvider
 import com.vishalgaur.sampleroomdatabaseapp.*
 import com.vishalgaur.sampleroomdatabaseapp.database.UserData
 import com.vishalgaur.sampleroomdatabaseapp.database.UserDatabase
@@ -19,10 +20,8 @@ class SharedViewModel(application: Application) :
 
     private val usersRepository = UsersRepository(UserDatabase.getInstance(application))
 
-//    private val _userData = MutableLiveData<UserData?>()
-//    val userData: LiveData<UserData?> get() = _userData
+    var userData: LiveData<UserData?>
 
-    val userData = usersRepository.uData
 
     private val _status = MutableLiveData<DataStatus>()
     val status: LiveData<DataStatus> get() = _status
@@ -31,6 +30,7 @@ class SharedViewModel(application: Application) :
     val errorStatus: LiveData<ViewErrors> get() = _errorStatus
 
     init {
+        userData = MutableLiveData()
         refreshDataFromRepository()
     }
 
@@ -39,6 +39,8 @@ class SharedViewModel(application: Application) :
             _status.value = DataStatus.LOADING
             _errorStatus.value = ViewErrors.NONE
 
+            setData()
+
             try {
                 Log.d(TAG, "Getting data from network...")
                 usersRepository.refreshData()
@@ -46,29 +48,26 @@ class SharedViewModel(application: Application) :
                 Log.d(TAG, "Not able to get data from network!")
             }
 
-            userData.observeForever {
-                Log.d(TAG, "Getting data from Room...")
-
-                if (it != null) {
-                    Log.d(TAG, "Data found: ${userData.value?.userName}")
-                    _status.value = DataStatus.LOADED
-                } else {
-                    Log.d(TAG, "No Data Found!")
-                    _status.value = DataStatus.EMPTY
-                }
-            }
+            setStatus(userData.value != null)
         }
     }
 
-//    private fun getUserFromDatabase(): UserData? {
-//        val uData = db.getNewData()
-//        val tableSize = db.getUsersData().size
-//        if (uData != null) {
-//            Log.d(TAG, "size: $tableSize, data: $uData")
-//            return uData
-//        }
-//        return null
-//    }
+    private fun setData() {
+        Log.d(TAG, "Getting data from Room...")
+        viewModelScope.launch {
+            userData = usersRepository.uData
+        }
+    }
+
+    fun setStatus(dataFound: Boolean) {
+        if (dataFound) {
+            Log.d(TAG, "Data found: ${userData.value?.userName}")
+            _status.value = DataStatus.LOADED
+        } else {
+            Log.d(TAG, "No Data Found!")
+            _status.value = DataStatus.EMPTY
+        }
+    }
 
     fun submitData(name: String, email: String, mobile: String, dob: String) {
         if (name.isBlank() || email.isBlank() || mobile.isBlank() || dob.isBlank()) {

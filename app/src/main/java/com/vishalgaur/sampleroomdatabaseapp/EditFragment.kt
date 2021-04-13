@@ -50,6 +50,7 @@ class EditFragment : Fragment() {
 
     private fun setObservers() {
         sharedViewModel.userData.observe(viewLifecycleOwner, { userData ->
+            sharedViewModel.setStatus(userData != null)
             if (userData != null) {
                 fillTextView(userData)
             }

@@ -11,6 +11,54 @@
         android:layout_height="match_parent"
         tools:context=".HomeFragment">
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/search_box_edit_text"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:hint="@string/search_hint_label"
+            app:layout_constraintEnd_toStartOf="@+id/search_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/search_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/search_btn_text"
+            app:layout_constraintBottom_toBottomOf="@+id/search_box_edit_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/search_box_edit_text" />
+
+        <TextView
+            android:id="@+id/search_error_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:drawableStart="@drawable/ic_error_outline_24"
+            android:drawablePadding="8dp"
+            android:fontFamily="serif"
+            android:gravity="start|fill_vertical"
+            android:text="@string/search_not_found_text"
+            android:textAllCaps="false"
+            android:textColor="#FF0000"
+            android:textSize="18sp"
+            app:drawableTint="#FF0000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search_box_edit_text" />
+
+
         <TextView
             android:id="@+id/detail_title"
             android:layout_width="match_parent"
@@ -22,7 +70,7 @@
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/search_error_text_view" />
 
         <TextView
             android:id="@+id/detail_name"
@@ -52,7 +100,7 @@
             android:gravity="center"
             android:padding="4dp"
             android:textSize="24sp"
-            app:drawableStartCompat="@drawable/ic_email_48"
+            app:drawableStartCompat="@drawable/ic_email_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detail_name"
@@ -69,7 +117,7 @@
             android:gravity="center"
             android:padding="4dp"
             android:textSize="24sp"
-            app:drawableStartCompat="@drawable/ic_phone_48"
+            app:drawableStartCompat="@drawable/ic_phone_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detail_email"
@@ -86,11 +134,24 @@
             android:gravity="center"
             android:padding="4dp"
             android:textSize="24sp"
-            app:drawableStartCompat="@drawable/ic_cake_48"
+            app:drawableStartCompat="@drawable/ic_cake_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detail_mobile"
             tools:text="Jan 01, 1999" />
+
+
+        <!--        <androidx.recyclerview.widget.RecyclerView-->
+        <!--            android:id="@+id/data_recycler_view"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            tools:itemCount="8"-->
+        <!--            tools:listitem="@layout/list_item" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

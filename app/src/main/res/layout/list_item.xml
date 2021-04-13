@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:contentPadding="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/card_name_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:drawablePadding="8dp"
+            android:padding="4dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Some Name" />
+
+        <TextView
+            android:id="@+id/card_email_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            android:padding="2dp"
+            android:textSize="16sp"
+            app:drawableStartCompat="@drawable/ic_email_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/card_name_text_view"
+            tools:text="someone@example.com" />
+
+        <TextView
+            android:id="@+id/card_mobile_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            android:padding="2dp"
+            android:textSize="16sp"
+            app:drawableStartCompat="@drawable/ic_phone_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/card_email_text_view"
+            tools:text="1234567890" />
+
+        <TextView
+            android:id="@+id/card_dob_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:drawablePadding="4dp"
+            android:gravity="center"
+            android:padding="2dp"
+            android:textSize="16sp"
+            app:drawableStartCompat="@drawable/ic_cake_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/card_mobile_text_view"
+            tools:text="Jan 01, 1999" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
