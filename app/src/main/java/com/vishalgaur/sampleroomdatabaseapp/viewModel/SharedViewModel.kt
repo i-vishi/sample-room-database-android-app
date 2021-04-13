@@ -22,12 +22,17 @@ class SharedViewModel(application: Application) :
 
     var userData: LiveData<UserData?>
 
+    private val _searchedData = MutableLiveData<UserData?>()
+    val searchedData: LiveData<UserData?> get() = _searchedData
 
     private val _status = MutableLiveData<DataStatus>()
     val status: LiveData<DataStatus> get() = _status
 
     private val _errorStatus = MutableLiveData<ViewErrors>()
     val errorStatus: LiveData<ViewErrors> get() = _errorStatus
+
+    private val _searchErrStatus = MutableLiveData<SearchErrors>()
+    val searchErrStatus: LiveData<SearchErrors> get() = _searchErrStatus
 
     init {
         userData = MutableLiveData()
@@ -38,6 +43,7 @@ class SharedViewModel(application: Application) :
         viewModelScope.launch {
             _status.value = DataStatus.LOADING
             _errorStatus.value = ViewErrors.NONE
+            _searchErrStatus.value = SearchErrors.NONE
 
             setData()
 
@@ -66,6 +72,20 @@ class SharedViewModel(application: Application) :
         } else {
             Log.d(TAG, "No Data Found!")
             _status.value = DataStatus.EMPTY
+        }
+    }
+
+    fun searchData(userId: String) {
+        when {
+            userId.isBlank() -> {
+                _searchErrStatus.value = SearchErrors.ERR_EMPTY
+            }
+            userId != userId.toLong().toString() -> {
+                _searchErrStatus.value = SearchErrors.ERR_INVALID
+            }
+            else -> {
+                getData(userId.toLong())
+            }
         }
     }
 
@@ -111,7 +131,14 @@ class SharedViewModel(application: Application) :
     private fun insertData(newData: UserData) {
         viewModelScope.launch {
             _status.value = DataStatus.EMPTY
-            usersRepository.updateData(newData)
+            usersRepository.insertData(newData)
+        }
+    }
+
+    private fun getData(uId: Long) {
+        viewModelScope.launch {
+            _searchErrStatus.value = SearchErrors.NONE
+            usersRepository.uDataById(uId)
         }
     }
 }

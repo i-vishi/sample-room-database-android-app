@@ -17,7 +17,7 @@ class UsersRepository(private val database: UserDatabase) {
         }
     }
 
-    suspend fun updateData(newData: UserData) {
+    suspend fun insertData(newData: UserData) {
         withContext(Dispatchers.IO) {
             Log.d(TAG, "updating data on Room")
             database.userDao.insert(newData)
@@ -34,4 +34,6 @@ class UsersRepository(private val database: UserDatabase) {
     }
 
     val uData: LiveData<UserData?> = database.userDao.getNewData()
+
+    val uDataById = fun(uId: Long): UserData? { return database.userDao.getById(uId) }
 }

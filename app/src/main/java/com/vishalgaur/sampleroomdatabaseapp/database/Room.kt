@@ -18,8 +18,8 @@ interface UserDao {
     @Insert
     fun insert(uData: UserData)
 
-    @Query("SELECT * FROM userTable WHERE userMobile = :uMobile")
-    fun get(uMobile: String): UserData?
+    @Query("SELECT * FROM userTable WHERE userId = :userId")
+    fun getById(userId: Long): UserData?
 
     @Query("SELECT * FROM userTable ORDER BY userId DESC LIMIT 1")
     fun getNewData(): LiveData<UserData?>

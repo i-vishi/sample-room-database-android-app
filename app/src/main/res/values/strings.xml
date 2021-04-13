@@ -22,9 +22,10 @@
     <string name="detail_title_text">User Found</string>
     <string name="detail_go_back_btn_text">Back</string>
     <string name="input_error_text">Fill all the details</string>
-    <string name="detail_empty_text">Nothing to show!</string>
+    <string name="detail_empty_text">Nothing to search!</string>
+    <string name="detail_search_true_text">Search to Get Information</string>
     <string name="input_dob_label_text">Date of Birth</string>
-    <string name="input_date_text" ><u>%s</u></string>
+    <string name="input_date_text"><u>%s</u></string>
     <string name="input_date_pick_btn_desc">Button to select date</string>
     <string name="input_cancel_btn_text">Cancel</string>
     <string name="search_hint_label">User ID</string>
